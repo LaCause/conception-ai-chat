@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📖 README — Idea → Mockup Generator
 
-## Getting Started
+## 🚀 Objectif
 
-First, run the development server:
+Cet outil transforme une **idée d’application décrite en langage naturel** en un **mockup visuel interactif**.  
+Il permet à toute personne (designer, dev, client) de visualiser rapidement son concept sans passer par Figma ou un long prototypage.
+
+---
+
+## 🛠️ Stack Technique
+
+- **Next.js 14** (App Router, SSR)
+- **Tailwind CSS v4** (thème light/dark avec CSS variables)
+- **Framer Motion** (animations, slide-in)
+- **Lucide React** (icônes modernes)
+- **Middleware** pour rediriger les nouveaux visiteurs vers `/onboarding`
+- **LocalStorage + Share URL** pour persister et partager son mockup
+
+---
+
+## 📦 Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site sera dispo sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Fonctionnalités
 
-## Learn More
+### 📝 Composer façon ChatGPT
 
-To learn more about Next.js, take a look at the following resources:
+- Décrivez votre idée en langage naturel.
+- **Entrée** → envoie la requête.
+- **Shift+Entrée** → nouvelle ligne.
+- Raccourci **⌘K** → focus dans le champ.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🎨 Génération de blocs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Chaque requête produit des **UI Blocks** (Hero, Search, List, Form, etc.).
+- Détection du **sujet** → application d’un **thème de couleurs** adapté (fintech = vert, santé = bleu, recettes = orange…).
 
-## Deploy on Vercel
+### 📱💻 Preview
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Mobile** : rendu dans un DeviceFrame compact.
+- **Desktop** : rendu sur un fond checkerboard responsive.
+- **Switch** entre Mobile / Desktop / Both grâce aux contrôles du header.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🛠️ Inspector
+
+- Sélection d’un bloc → panneau latéral animé qui s’ouvre.
+- Édition des propriétés du bloc (titre, description…).
+- Suppression d’un bloc.
+- Boutons ↑ ↓ pour réordonner.
+
+### 🌗 Dark / Light Mode
+
+- Toggle en haut à droite.
+- Persistance dans `localStorage`.
+- Transitions douces entre les thèmes.
+
+### 📂 Persistance & Partage
+
+- État sauvegardé automatiquement en `localStorage`.
+- Bouton **Partager** → génère une URL unique encodée.
+- Bouton **Réinitialiser** → supprime la persistance et repart de zéro.
+
+### 🧑‍🏫 Onboarding
+
+- Première visite → redirection automatique vers `/onboarding` (via middleware).
+- Cookie `visited` défini une fois l’onboarding terminé.
+
+---
+
+## 🧪 Exemples de requêtes
+
+Taper dans le champ :
+
+- **“Une app de fitness pour suivre mes séances et mes progrès.”**  
+  👉 Génère un Hero + Liste d’exercices + CTA, thème vert punchy.
+
+- **“Application de recettes avec un moteur de recherche et des fiches détaillées.”**  
+  👉 Génère Search + Card Grid + Detail, thème orange chaleureux.
+
+- **“Plateforme d’éducation avec un feed de cours et une inscription.”**  
+  👉 Génère Hero + List + Form, thème violet/bleu.
+
+- **“Un outil de finance perso pour gérer mon budget et voir mes dépenses.”**  
+  👉 Génère Dashboard (List + Graph) + CTA Bar, thème vert confiance.
+
+---
+
+## ✅ Roadmap possible
+
+- [ ] Améliorer le Design system
+- [ ] Améliorer l'architecture
+- [ ] Ajouter les tests unitaires
+- [ ] Ajouter un export PNG / PDF des mockups.
+- [ ] Intégrer un mode “collaboration” temps réel.
+- [ ] Support plus poussé des thèmes personnalisés.
+- [ ] Composants avancés (Charts, Calendrier, etc.).
+- [ ] Ajouter un storybook.

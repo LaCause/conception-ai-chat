@@ -1,26 +1,200 @@
 @import "tailwindcss";
 
+/* ===== Tokens Tailwind v4 ===== */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, Inter, "Segoe UI", Roboto, Arial;
+
+  /* Base palette */
+  --bg: oklch(99% 0 0); /* fond clair */
+  --fg: oklch(18% 0 0);
+  --muted: oklch(60% 0.02 0);
+
+  /* Élévations & surfaces */
+  --elev: oklch(98% 0 0);
+  --elev-2: oklch(96% 0 0);
+
+  /* Accent (vives) */
+  --primary: oklch(62% 0.23 280);
+  --primary-contrast: oklch(12% 0 0);
+
+  /* Gradients */
+  --grad-from: oklch(70% 0.25 280);
+  --grad-mid: oklch(73% 0.2 320);
+  --grad-to: oklch(78% 0.16 20);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --bg: var(--bg);
+  --fg: var(--fg);
+  --muted: var(--muted);
+  --elev: var(--elev);
+  --elev-2: var(--elev-2);
+  --primary: var(--primary);
+  --primary-contrast: var(--primary-contrast);
+  --grad-from: oklch(62% 0.23 280);
+  --grad-mid: oklch(58% 0.2 320);
+  --grad-to: oklch(56% 0.19 30);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root.dark {
+  color-scheme: dark;
+  --bg: oklch(12% 0 0);
+  --fg: oklch(98% 0 0);
+  --muted: oklch(80% 0.02 0);
+  --elev: oklch(16% 0 0);
+  --elev-2: oklch(18% 0 0);
+
+  --primary: oklch(70% 0.22 270);
+  --primary-contrast: oklch(10% 0 0);
+
+  --grad-from: oklch(78% 0.21 270);
+  --grad-mid: oklch(75% 0.2 210);
+  --grad-to: oklch(83% 0.17 70);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body,
+:root {
+  height: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  color: var(--fg);
+  background: radial-gradient(
+      1200px 800px at 10% -10%,
+      color-mix(in oklab, var(--grad-from) 15%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      1200px 800px at 110% 10%,
+      color-mix(in oklab, var(--grad-to) 10%, transparent),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--bg) 100%, transparent),
+      var(--bg)
+    );
+}
+
+/* ===== Utilities (v4) ===== */
+@utility soft-card {
+  @apply rounded-2xl border border-black/10 bg-[--elev]/80 backdrop-blur supports-[backdrop-filter]:bg-[--elev]/60 shadow-[0_6px_30px_-10px_rgba(0,0,0,0.2)] dark:border-white/10;
+}
+
+@utility glow-outline {
+  /* outline sans décaler le layout */
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 70%, transparent),
+    0 10px 30px -10px color-mix(in oklab, var(--primary) 40%, transparent);
+}
+
+@utility gradient-text {
+  background-image: linear-gradient(
+    90deg,
+    var(--grad-from),
+    var(--grad-mid),
+    var(--grad-to)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent; /* nécessaire pour Safari/WebKit */
+}
+
+/* Optionnel : un soupçon d’ombre en light pour améliorer la lecture sur fond blanc */
+:root:not(.dark) .gradient-text {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+@utility gradient-border {
+  background: linear-gradient(var(--bg), var(--bg)) padding-box,
+    linear-gradient(90deg, var(--grad-from), var(--grad-mid), var(--grad-to))
+      border-box;
+  border: 1.5px solid transparent;
+  border-radius: 1rem;
+}
+
+@utility btn {
+  @apply h-11 rounded-xl px-4 font-medium transition-[transform,filter] active:scale-[0.98];
+}
+@utility btn-primary {
+  @apply btn text-[--primary-contrast];
+  background: linear-gradient(
+    90deg,
+    var(--grad-from),
+    var(--grad-mid),
+    var(--grad-to)
+  );
+}
+@utility btn-ghost {
+  @apply btn border border-black/10 bg-[--elev]/70 dark:border-white/10;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
+.fade-in {
+  animation: fadeIn 0.4s ease both;
+}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* --- Anim entrée depuis la droite --- */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.slide-in-right {
+  animation: slideInRight 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  z-index: 1;
+  position: relative;
+}
+
+/* --- Skeleton shimmer --- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.skel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 25%,
+    rgba(255, 255, 255, 0.16) 37%,
+    rgba(255, 255, 255, 0.06) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+:root:not(.dark) .skel {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.04) 25%,
+    rgba(0, 0, 0, 0.12) 37%,
+    rgba(0, 0, 0, 0.04) 63%
+  );
+  background-size: 200% 100%;
+}
+
+/* Petit util pour containers pro */
+@utility pro-surface {
+  @apply rounded-2xl border border-black/10 bg-[--elev]/80 backdrop-blur dark:border-white/10;
 }
