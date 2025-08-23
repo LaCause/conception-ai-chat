@@ -1,10 +1,10 @@
 "use client";
 
-export default function DeviceFrame({
-  children,
-}: {
+export interface DeviceFrameProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function DeviceFrame({ children }: DeviceFrameProps) {
   return (
     <div className="mx-auto w-full max-w-[380px]">
       <div className="relative rounded-[2.2rem] bg-black/80 p-2 shadow-2xl">
@@ -12,7 +12,7 @@ export default function DeviceFrame({
         <div className="rounded-[1.9rem] bg-neutral-900 p-2">
           <div
             data-mockup-root
-            className="rounded-[1.5rem] bg-[--bg] ring-1 ring-black/20 dark:ring-white/10 overflow-hidden"
+            className="rounded-[1.5rem] bg-white dark:bg-[--bg] ring-1 ring-black/20 dark:ring-white/10 overflow-hidden"
             style={{ aspectRatio: "9/19.5" }}
           >
             {children}

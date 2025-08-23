@@ -1,13 +1,15 @@
 "use client";
+
+export interface ToolbarProps {
+  onRefine: (r: string) => void;
+  onExportJSON: () => void;
+  disabled?: boolean;
+}
 export default function Toolbar({
   onRefine,
   onExportJSON,
   disabled,
-}: {
-  onRefine: (r: string) => void;
-  onExportJSON: () => void;
-  disabled?: boolean;
-}) {
+}: ToolbarProps) {
   return (
     <div className="soft-card flex flex-wrap items-center gap-2 p-3">
       <div className="inline-flex overflow-hidden rounded-xl border border-black/10 dark:border-white/10">

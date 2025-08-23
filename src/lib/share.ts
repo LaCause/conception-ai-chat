@@ -4,10 +4,11 @@ export function encodeState(obj: unknown) {
     ? ""
     : btoa(unescape(encodeURIComponent(s)));
 }
-export function decodeState(s: string): any | null {
+
+export function decodeState<T = unknown>(s: string): T | null {
   try {
     const json = decodeURIComponent(escape(atob(s)));
-    return JSON.parse(json);
+    return JSON.parse(json) as T;
   } catch {
     return null;
   }
