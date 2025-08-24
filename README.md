@@ -1,104 +1,174 @@
-# 📖 README — Idea → Mockup Generator
+# Conception AI – De l’idée au mockup
 
-## 🚀 Objectif
+> Une application Next.js qui permet de transformer une simple description en **mockup interactif**.  
+> L’utilisateur décrit son idée en langage naturel et obtient une maquette (UI blocks dynamiques) générée automatiquement.
 
-Cet outil transforme une **idée d’application décrite en langage naturel** en un **mockup visuel interactif**.  
-Il permet à toute personne (designer, dev, client) de visualiser rapidement son concept sans passer par Figma ou un long prototypage.
+# Available Scripts
 
----
-
-## 🛠️ Stack Technique
-
-- **Next.js 14** (App Router, SSR)
-- **Tailwind CSS v4** (thème light/dark avec CSS variables)
-- **Framer Motion** (animations, slide-in)
-- **Lucide React** (icônes modernes)
-- **Middleware** pour rediriger les nouveaux visiteurs vers `/onboarding`
-- **LocalStorage + Share URL** pour persister et partager son mockup
-
----
-
-## 📦 Installation
+## Development
 
 ```bash
-npm install && npm run dev
+# Start Next.js in development mode
+npm run dev
 ```
 
-Le site sera dispo sur [http://localhost:3000](http://localhost:3000).
+## Build & Production
+
+```bash
+# Build the Next.js app
+npm run build
+
+# Start the app in production mode
+npm run start
+```
+
+## Lint & Type Checking
+
+```bash
+# Run ESLint
+npm run lint
+
+# Fix ESLint errors automatically
+npm run lint:fix
+
+# Run TypeScript type checking
+npm run typecheck
+
+# Run lint and typecheck together
+npm run check
+```
+
+## Tests
+
+```bash
+# Run all tests
+npm run test
+
+# Run only Design System tests
+npm run test:ds
+
+# Run only domain tests
+npm run test:domain
+
+# Run only Storybook tests
+npm run test:sb
+
+# Run Design System tests in watch mode
+npm run test:watch
+
+# Generate coverage report
+npm run coverage
+```
+
+## Storybook
+
+```bash
+# Start Storybook in development mode
+npm run storybook
+
+# Build static Storybook
+npm run storybook:build
+```
 
 ---
 
-## ✨ Fonctionnalités
+## 🚀 Fonctionnalités principales
 
-### 📝 Composer façon ChatGPT
+### Génération de mockups
 
-- Décrivez votre idée en langage naturel.
-- **Entrée** → envoie la requête.
-- **Shift+Entrée** → nouvelle ligne.
-- Raccourci **⌘K** → focus dans le champ.
+- Champ de saisie type **ChatGPT** (`Composer`) pour décrire une idée.
+- Détection de contexte (`fintech`, `ecommerce`, `social`, etc.) et application dynamique de **couleurs**/thèmes.
+- Les idées sont transformées en une liste de `UIBlock` affichés dans le `MockupCanvas`.
 
-### 🎨 Génération de blocs
+### Aperçus multi-devices
 
-- Chaque requête produit des **UI Blocks** (Hero, Search, List, Form, etc.).
-- Détection du **sujet** → application d’un **thème de couleurs** adapté (fintech = vert, santé = bleu, recettes = orange…).
+- **Mobile** : rendu dans un `DeviceFrame`.
+- **Desktop** : rendu dans un `DesktopFrame` avec chrome navigateur simulé.
+- Mode **both** pour voir les deux en parallèle.
+- Contrôlé via `ViewControls` (📱/💻/⬛).
 
-### 📱💻 Preview
+### Edition des blocs
 
-- **Mobile** : rendu dans un DeviceFrame compact.
-- **Desktop** : rendu sur un fond checkerboard responsive.
-- **Switch** entre Mobile / Desktop / Both grâce aux contrôles du header.
+- Chaque bloc est rendu par `BlockRenderer` et ses sous-composants (`BlockHeader`, `BlockHero`, `BlockList`, etc.).
+- `Inspector` permet de modifier le **type, titre, description et colonnes** d’un bloc sélectionné.
+- Suppression possible bloc par bloc.
 
-### 🛠️ Inspector
+### Toolbar et HeaderBar
 
-- Sélection d’un bloc → panneau latéral animé qui s’ouvre.
-- Édition des propriétés du bloc (titre, description…).
-- Suppression d’un bloc.
-- Boutons ↑ ↓ pour réordonner.
+- `HeaderBar` sticky qui se rétrécit au scroll (compact mode).
+- Boutons **Partager / Réinitialiser / ThemeToggle** (dark/light).
+- `Toolbar` pour appliquer rapidement des raffinements :
+  - ➕ Ajouter un formulaire
+  - 🎴 Mettre l’accent sur les cartes
+  - 📰 Ajouter un feed d’articles
+- Export du mockup en **JSON**.
 
-### 🌗 Dark / Light Mode
+### Onboarding
 
-- Toggle en haut à droite.
-- Persistance dans `localStorage`.
-- Transitions douces entre les thèmes.
+- Middleware qui redirige un utilisateur qui n’a **jamais visité** vers `/onboarding`.
+- Une fois passé, l’utilisateur arrive sur `/`.
 
-### 📂 Persistance & Partage
+### Design System
 
-- État sauvegardé automatiquement en `localStorage`.
-- Bouton **Partager** → génère une URL unique encodée.
-- Bouton **Réinitialiser** → supprime la persistance et repart de zéro.
-
-### 🧑‍🏫 Onboarding
-
-- Première visite → redirection automatique vers `/onboarding` (via middleware).
-- Cookie `visited` défini une fois l’onboarding terminé.
-
----
-
-## 🧪 Exemples de requêtes
-
-Taper dans le champ :
-
-- **“Une app de fitness pour suivre mes séances et mes progrès.”**  
-  👉 Génère un Hero + Liste d’exercices + CTA, thème vert punchy.
-
-- **“Application de recettes avec un moteur de recherche et des fiches détaillées.”**  
-  👉 Génère Search + Card Grid + Detail, thème orange chaleureux.
-
-- **“Plateforme d’éducation avec un feed de cours et une inscription.”**  
-  👉 Génère Hero + List + Form, thème violet/bleu.
-
-- **“Un outil de finance perso pour gérer mon budget et voir mes dépenses.”**  
-  👉 Génère Dashboard (List + Graph) + CTA Bar, thème vert confiance.
+- **Boutons (`Button`)** : variantes (`primary`, `secondary`, `ghost`, `danger`), tailles (`sm`, `md`, `lg`), icônes gauche/droite, état `loading`.
+- **Cards (`Card`, `CardTitle`, `CardDescription`)**.
+- **ProgressBar**.
+- **SegmentControl** (switch horizontal accessible).
+- **ThemeToggle** (clair/sombre, persistant via `localStorage`).
+- Tous ces composants sont testés et documentés via **Storybook**.
 
 ---
 
-## ✅ Roadmap possible
+## 🛠️ Tech Stack
 
-- [ ] Améliorer le Design system
-- [ ] Améliorer l'architecture
-- [ ] Ajouter les tests unitaires
-- [ ] Ajouter un export PNG / PDF des mockups.
-- [ ] Intégrer un mode “collaboration” temps réel.
-- [ ] Support plus poussé des thèmes personnalisés.
-- [ ] Composants avancés (Charts, Calendrier, etc.).
-- [ ] Ajouter un storybook.
+- **Framework** : Next.js 14 (App Router)
+- **Style** : Tailwind CSS v4 (avec tokens et dark mode via `:root.dark`)
+- **Langage** : TypeScript strict
+- **Design System** : composants réutilisables dans `/src/design-system`
+- **Tests** : Vitest + React Testing Library
+- **Documentation UI** : Storybook (`@storybook/nextjs-vite`)
+
+---
+
+## ✅ Tests
+
+Nous avons mis en place des tests unitaires sur les composants **UI** et **métier** :
+
+- `Button.test.tsx` → variantes, icônes, état `loading`
+- `Card.test.tsx` → rendu titre/description, classes custom
+- `ProgressBar.test.tsx` → clamp de valeurs, affichage %
+- `SegmentControl.test.tsx` → sélection et aria-pressed
+- `ThemeToggle.test.tsx` → bascule light/dark avec localStorage
+- `BlockRenderer.test.tsx` → rend les bons sous-blocs, fallback inconnu
+- `MockupCanvas.test.tsx` → sélection de blocs, réordonnancement, highlight
+- `Inspector.test.tsx` → édition type, titre, desc, colonnes, suppression
+- `HeaderBar.test.tsx` → compact vs non-compact, Toolbar, ViewControls
+- `Composer.test.tsx` → auto-resize, soumission clavier, troncature à 1000 chars
+- `Toolbar.test.tsx` → boutons rapides et export JSON
+
+---
+
+## 📖 Exemples d’utilisation
+
+### Décrire une idée
+
+Dans le champ :
+
+```
+Une app fintech avec un dashboard de comptes et un formulaire de transfert d’argent
+```
+
+Résultat :
+
+- Bloc `HEADER` → “Fintech App”
+- Bloc `HERO` → “Gérez vos finances en toute simplicité”
+- Bloc `CARD_GRID` → Dashboard de comptes
+- Bloc `FORM` → Formulaire de transfert
+
+---
+
+### Ajouter un feed
+
+En cliquant sur ➕ Feed dans la toolbar → insertion d’un bloc `LIST` en bas du mockup.
+
+---
