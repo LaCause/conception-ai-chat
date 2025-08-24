@@ -14,7 +14,7 @@ export interface ButtonProps
   loading?: boolean;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
-  block?: boolean; // full width
+  block?: boolean;
 }
 
 const VARIANT: Record<Variant, string> = {
@@ -77,5 +77,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
+
+Button.displayName = "Button";
 
 export default Button;

@@ -7,7 +7,6 @@ const match = (s: string, ...terms: string[]) =>
   terms.some((t) => s.includes(t));
 const uid = (p: string) => `${p}-${Math.random().toString(36).slice(2, 8)}`;
 
-/** Palette par défaut (violet énergique) */
 const DEFAULT_THEME: ThemeTokens = {
   primary: "oklch(62% 0.23 280)",
   gradFrom: "oklch(62% 0.23 280)",
@@ -15,21 +14,18 @@ const DEFAULT_THEME: ThemeTokens = {
   gradTo: "oklch(56% 0.19 30)",
 };
 
-/** Heuristique: mappe des sujets à des palettes cohérentes */
 function pickTheme(text: string): ThemeTokens {
   const s = text.toLowerCase();
 
-  // Finance / fintech: vert confiance
   if (match(s, "finance", "budget", "banque", "invest", "trading", "fintech")) {
     return {
-      primary: "oklch(60% 0.14 160)", // vert doux
+      primary: "oklch(60% 0.14 160)",
       gradFrom: "oklch(62% 0.16 160)",
       gradMid: "oklch(58% 0.14 180)",
       gradTo: "oklch(55% 0.12 140)",
     };
   }
 
-  // Santé / bien-être: bleu apaisant
   if (match(s, "santé", "health", "bien-être", "wellness", "médical", "care")) {
     return {
       primary: "oklch(65% 0.12 230)",
@@ -39,7 +35,6 @@ function pickTheme(text: string): ThemeTokens {
     };
   }
 
-  // Éducation: bleu/violet studieux
   if (
     match(s, "éducation", "cours", "learning", "learn", "school", "formation")
   ) {
@@ -51,7 +46,6 @@ function pickTheme(text: string): ThemeTokens {
     };
   }
 
-  // Food / recettes: orange chaleureux
   if (match(s, "recette", "food", "cuisine", "restaurant", "meal", "calorie")) {
     return {
       primary: "oklch(70% 0.18 60)",
@@ -61,17 +55,15 @@ function pickTheme(text: string): ThemeTokens {
     };
   }
 
-  // Voyage: bleu/lagon & sable
   if (match(s, "voyage", "travel", "trip", "vol", "hotel", "itinéraire")) {
     return {
       primary: "oklch(70% 0.14 210)",
       gradFrom: "oklch(72% 0.16 210)",
       gradMid: "oklch(68% 0.13 250)",
-      gradTo: "oklch(72% 0.10 85)", // sable doux
+      gradTo: "oklch(72% 0.10 85)",
     };
   }
 
-  // Fitness / sport: vert/menthe punchy
   if (match(s, "fitness", "workout", "sport", "run", "yoga", "gym")) {
     return {
       primary: "oklch(75% 0.17 150)",
@@ -81,7 +73,6 @@ function pickTheme(text: string): ThemeTokens {
     };
   }
 
-  // Gaming / entertainment: rose/indigo néon
   if (
     match(s, "gaming", "jeu", "stream", "twitch", "e-sport", "entertainment")
   ) {
@@ -93,7 +84,6 @@ function pickTheme(text: string): ThemeTokens {
     };
   }
 
-  // Nature / écologie
   if (match(s, "nature", "écologie", "environnement", "plante", "jardin")) {
     return {
       primary: "oklch(70% 0.12 140)",
@@ -106,7 +96,6 @@ function pickTheme(text: string): ThemeTokens {
   return DEFAULT_THEME;
 }
 
-// --- ancien hasSimilar/pushIfNew identiques ---
 function hasSimilar(arr: UIBlock[], probe: Partial<UIBlock>) {
   return arr.some(
     (b) =>
@@ -120,7 +109,6 @@ function pushIfNew(arr: UIBlock[], b: UIBlock) {
   if (!hasSimilar(arr, { type: b.type, title: b.title })) arr.push(b);
 }
 
-/** Retourne désormais { blocks, theme } */
 export function generateBlocks(
   idea: string,
   refine: string,
@@ -148,7 +136,6 @@ export function generateBlocks(
     pushIfNew(blocks, base);
   };
 
-  // Intent → suggestions de blocs (ADD-ONLY)
   if (match(text, "accueil", "hero", "landing"))
     add("HERO", { title: "Bienvenue", description: "Pitch court" });
   if (match(text, "recherche", "search", "scanner", "scan"))
@@ -186,7 +173,6 @@ export function generateBlocks(
   if (!blocks.some((b) => b.type === "CTA_BAR"))
     add("CTA_BAR", { title: "Action principale", order: 99 });
 
-  // Refine add-only
   if (match(text, "feed", "articles"))
     add("LIST", { title: "Feed d’articles" });
   if (match(text, "emphase", "cartes", "grid"))
@@ -194,7 +180,6 @@ export function generateBlocks(
   if (match(text, "auth", "login", "signup", "s'inscrire"))
     add("FORM", { title: "Inscription / Connexion" });
 
-  // Normalise l’ordre mais conserve l’append
   blocks = blocks.map((b, i) => ({ ...b, order: i }));
 
   return { blocks, theme };

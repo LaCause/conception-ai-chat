@@ -1,3 +1,8 @@
+export interface Blocks {
+  blocks: UIBlock[];
+  idea: string;
+}
+
 export type BlockType =
   | "HEADER"
   | "HERO"
@@ -14,16 +19,14 @@ export interface UIBlock {
   title?: string;
   description?: string;
   hint?: string;
-  // layout suggéré (peut être ignoré sur mobile)
-  cols?: number; // 1-12
-  order?: number; // tri d’affichage
+
+  cols?: number;
+  order?: number;
   data?: Record<string, unknown>;
 }
 
-// --- ajoute en bas du fichier ---
-
 export interface ThemeTokens {
-  primary: string; // ex: oklch(...)
+  primary: string;
   gradFrom: string;
   gradMid: string;
   gradTo: string;
@@ -33,3 +36,10 @@ export interface GeneratePayload {
   blocks: UIBlock[];
   theme?: ThemeTokens;
 }
+
+export type ThemeVars = {
+  primary: string;
+  gradFrom: string;
+  gradMid: string;
+  gradTo: string;
+};
